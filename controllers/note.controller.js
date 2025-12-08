@@ -1,4 +1,10 @@
-import { createNote, getUserNotes } from "../models/note.model.js";
+import {
+  createNote,
+  deleteNote,
+  findNote,
+  getUserNotes,
+  updateNote,
+} from "../models/note.model.js";
 import { findUserByEmail } from "../models/user.js";
 
 // Handler to create a new note
@@ -45,5 +51,93 @@ export const getNotesHandler = async (req, res) => {
 
 // Handler to delete a note
 export const deleteNoteHandler = async (req, res) => {
-  console.log(req.params)
+  const { id } = req.params;
+  const { email } = req.user;
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(401).send({ message: "Unauthorized, please sign in" });
+    }
+
+    const deletedNote = await deleteNote(user._id, id);
+    if (deletedNote.deletedCount === 0) {
+      return res.status(404).send({
+        message:
+          "Note not found or you don't have the right access to delete this note",
+      });
+    }
+
+    res.status(200).send({ message: "Note deleted successfully" });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+// Handler to get a secific note
+export const getSingleNoteHandler = async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.user;
+
+  try {
+    const user = await findUserByEmail(email);
+
+    if (!user) {
+      return res
+        .status(401)
+        .send({ message: "Unauthorized, please login again" });
+    }
+
+    const note = await findNote(id, req.user.id);
+    if (!note) {
+      return res.status(404).send({ message: "Note not found" });
+    }
+
+    res.status(200).send({ message: "Note retrieved successfully", note });
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+// Handler to update a specific note
+export const updateNoteHandler = async (req, res) => {
+  const { id } = req.params;
+  const { email } = req.user;
+  const { title, content } = req.body;
+
+  try {
+    const user = await findUserByEmail(email);
+    if (!user) {
+      return res.status(401).send({ message: "Unauthorized, please sign-up" });
+    }
+
+    const note = await findNote(id, req.user.id);
+    if (!note) {
+      return res.status(404).send({ message: "Note not found" });
+    }
+
+    const update = {};
+    if (title) update.title = title;
+    if (content) update.content = content;
+
+    if (Object.keys(update).length === 0) {
+      return res.status(400).send({ message: "Enter a field to update" });
+    }
+
+    const updatedNote = await updateNote(id, req.user.id, update);
+    if (updatedNote.matchedCount === 0) {
+      res.status(404).send({ message: "Access denied" });
+    }
+
+    res.status(200).send({ message: "Note updated successfully" });
+    
+  } catch (error) {
+    res
+      .status(500)
+      .send({ message: "Internal Server Error", error: error.message });
+  }
 };
