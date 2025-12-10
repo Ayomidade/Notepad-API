@@ -15,7 +15,8 @@ export async function createUser(name, email, password) {
 
   // Inserting into the database
   const response = await users.insertOne({
-    name,
+    firstname,
+    lastname,
     email,
     password: hashedPassword,
     createdAt: new Date(),

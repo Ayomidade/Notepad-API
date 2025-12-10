@@ -4,21 +4,21 @@ import bcrypt from "bcrypt";
 
 // Handler to create a new user
 export const newUser = async (req, res) => {
-  const { name, email, password } = req.body;
+  const { firstname, lastname, email, password } = req.body;
 
   try {
     // validating requset body
-    if (!name || !email || !password) {
+    if (!firstname || !lastname || !email || !password) {
       return res
         .status(400)
         .send({ message: "Name, email and password are required." });
     }
 
     // creating new user
-    const newUser = await createUser(name, email, password);
+    const newUser = await createUser(firstname, lastname, email, password);
     if (newUser) {
       res.status(201).send({
-        message: `Welcome aboard ${name}, your account has been successfully created.`,
+        message: `Welcome aboard ${firstname}, your account has been successfully created.`,
         userId: newUser,
       });
     } else {
@@ -41,7 +41,6 @@ export const newUser = async (req, res) => {
 export const defaultHandler = (res, req) => {
   res.send("Server is live and running");
 };
-
 
 // Handler to login a user
 export const loginUser = async (req, res) => {
@@ -72,7 +71,7 @@ export const loginUser = async (req, res) => {
 
     // giving successful response
     res.status(200).send({
-      message: `Login Successful, welcome back ${user.name}.`,
+      message: `Login Successful, welcome back ${user.firstname}.`,
       token,
     });
   } catch (error) {
@@ -90,7 +89,7 @@ export const currentUser = async (req, res) => {
 
     if (user) {
       res.status(200).send({
-        message: `Welcome back ${user.name}, your email is ${user.email}`,
+        message: `Welcome back ${user.firstname}, your email is ${user.email}`,
       });
     } else {
       res.status(404).send({ message: "User not found" });
