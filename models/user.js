@@ -1,7 +1,7 @@
 import { users } from "../utils/db.js";
 import bcrypt from "bcrypt";
 
-export async function createUser(name, email, password) {
+export async function createUser(firstname, lastname, email, password) {
   // check if email exists
   const existing = await users.findOne({ email });
   if (existing) {
