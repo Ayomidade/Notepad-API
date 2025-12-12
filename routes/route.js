@@ -24,6 +24,6 @@ router.post("/notes", auth, createNoteHandler); // API to create a new note (wor
 router.get("/notes", auth, getNotesHandler); // API to get all notes of a user (working)
 router.delete("/notes/:id", auth, deleteNoteHandler); //API to delete a single note with the notedId and userId
 router.get("/notes/:id", auth, getSingleNoteHandler); //API to get a single note with the noteId and userId
-router.patch("/update-note/:id", auth, updateNoteHandler);
+router.patch("/notes/:id", auth, updateNoteHandler);
 
 // export default router;
