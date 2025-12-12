@@ -90,7 +90,7 @@ export const getSingleNoteHandler = async (req, res) => {
         .send({ message: "Unauthorized, please login again" });
     }
 
-    const note = await findNote(id, req.user.id);
+    const note = await findNote(id, user._id);
     if (!note) {
       return res.status(404).send({ message: "Note not found" });
     }
