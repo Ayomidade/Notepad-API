@@ -4,11 +4,11 @@ import bcrypt from "bcrypt";
 
 // Handler to create a new user
 export const newUser = async (req, res) => {
-  const { firstname, lastname, email, password } = req.body;
+  const { fullname, email, password } = req.body;
 
   try {
     // validating requset body
-    if (!firstname || !lastname || !email || !password) {
+    if (!fullname || !email || !password) {
       return res
         .status(400)
         .send({ message: "Name, email and password are required." });
