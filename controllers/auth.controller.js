@@ -18,7 +18,7 @@ export const newUser = async (req, res) => {
     const newUser = await createUser(firstname, lastname, email, password);
     if (newUser) {
       res.status(201).send({
-        message: `Welcome aboard ${firstname} your account has been successfully created.`,
+        message: `Welcome aboard {fullname} your account has been successfully created.`,
         userId: newUser,
       });
     } else {
