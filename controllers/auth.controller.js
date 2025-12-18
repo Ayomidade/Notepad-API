@@ -8,7 +8,7 @@ export const newUser = async (req, res) => {
 
   try {
     // validating requset body
-    if (!firstname||lastname || !email || !password) {
+    if (!firstname||!lastname || !email || !password) {
       return res
         .status(400)
         .send({ message: "Name, email and password are required." });
