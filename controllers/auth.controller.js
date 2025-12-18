@@ -26,13 +26,13 @@ export const newUser = async (req, res) => {
 
     if (newUser) {
       res.status(201).send({
-        message: `Welcome aboard ${firstname} your account has been successfully created.`,
+        message: `Registration successful`,
         token
       });
     } else {
       res
         .status(400)
-        .send({ message: "User account creation failed, please try again" });
+        .send({ message: "Action failed, please try again" });
     }
   } catch (error) {
     if (error.status === 400) {
@@ -61,13 +61,13 @@ export const loginUser = async (req, res) => {
     if (!user) {
       res
         .status(404)
-        .send({ message: `User with ${email} not found, please register` });
+        .send({ message: `User not found, please register` });
     }
 
     // compare password
     const isPasswordValid = await bcrypt.compare(password, user.password);
     if (!isPasswordValid) {
-      return res.status(401).send({ message: "Invalid email or password" });
+      return res.status(401).send({ message: "Invalid credentials" });
     }
 
     // generating jwt token
@@ -79,7 +79,7 @@ export const loginUser = async (req, res) => {
 
     // giving successful response
     res.status(200).send({
-      message: `Login Successful, welcome back ${user.firstname}.`,
+      message: `Login Successful, ${user.firstname}.`,
       token,
     });
   } catch (error) {
