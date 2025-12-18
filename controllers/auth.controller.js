@@ -8,7 +8,7 @@ export const newUser = async (req, res) => {
 
   try {
     // validating requset body
-    if (!firstname||lastname || !email || !password) {
+    if (!firstname || lastname || !email || !password) {
       return res
         .status(400)
         .send({ message: "Name, email and password are required." });
@@ -16,10 +16,18 @@ export const newUser = async (req, res) => {
 
     // creating new user
     const newUser = await createUser(firstname, lastname, email, password);
+
+    // generating jwt token
+    const token = jwt.sign(
+      { newUser }, // payload
+      process.env.JWT_SECRET, // jwt secret from the env file
+      { expiresIn: "2h" } // token expiry time
+    );
+
     if (newUser) {
       res.status(201).send({
         message: `Welcome aboard ${firstname} your account has been successfully created.`,
-        userId: newUser,
+        token
       });
     } else {
       res
@@ -64,9 +72,9 @@ export const loginUser = async (req, res) => {
 
     // generating jwt token
     const token = jwt.sign(
-      { id: user._id, email: user.email }, // payload
+      { user }, // payload
       process.env.JWT_SECRET, // jwt secret from the env file
-      { expiresIn: "1h" } // token expiry time
+      { expiresIn: "2h" } // token expiry time
     );
 
     // giving successful response
