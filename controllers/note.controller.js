@@ -10,17 +10,22 @@ import { findUserByEmail } from "../models/user.js";
 // Handler to create a new note
 export const createNoteHandler = async (req, res) => {
   const { title, content } = req.body;
-  if (!req.user || !req.user.id) {
+  const { email } = req.user;
+
+  const user = await findUserByEmail(email);
+  if (!user) {
     return res.status(401).send({ message: "Unauthorized" });
   }
-  const userId = req.user.id;
+
+  const userId = user._id;
+
   try {
     if (!title || !content) {
       return res
         .status(400)
         .send({ message: "Title and content are required." });
     }
-    const noteId = await createNote(title, content, userId);
+    const noteId = await createNote(title, content, userId, email);
     res.status(201).send({ message: "Note successfully created", noteId });
   } catch (error) {
     console.log("Error creating note:", error);
@@ -34,13 +39,18 @@ export const getNotesHandler = async (req, res) => {
   try {
     const user = await findUserByEmail(email);
 
+    const userId = user._id;
+
     if (user) {
-      const userNotes = await getUserNotes(user._id);
+      const userNotes = await getUserNotes(user.email, userId);
+      // if (userNotes == []) {
+      //   return res.status(404).send({ message: "No note found" });
+      // }
       res
         .status(200)
         .send({ message: "Notes retrieved successfully", notes: userNotes });
     } else {
-      res.status(404).send({ message: "User not found, please login again" });
+      res.status(401).send({ message: "Unauthorized" });
     }
   } catch (error) {
     res
@@ -115,7 +125,7 @@ export const updateNoteHandler = async (req, res) => {
       return res.status(401).send({ message: "Unauthorized, please sign-up" });
     }
 
-    const note = await findNote(id, req.user.id);
+    const note = await findNote(id, user._id);
     if (!note) {
       return res.status(404).send({ message: "Note not found" });
     }
@@ -134,7 +144,6 @@ export const updateNoteHandler = async (req, res) => {
     }
 
     res.status(200).send({ message: "Note updated successfully" });
-    
   } catch (error) {
     res
       .status(500)

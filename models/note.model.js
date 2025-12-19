@@ -2,9 +2,10 @@ import { ObjectId } from "mongodb";
 import { notes } from "../utils/db.js";
 
 // Create a new note
-export async function createNote(title, content, userId) {
+export async function createNote(title, content, userId, email) {
   const { insertedId } = await notes.insertOne({
     userId: new ObjectId(userId),
+    email,
     title,
     content,
     createdAt: new Date(),
@@ -14,9 +15,9 @@ export async function createNote(title, content, userId) {
 }
 
 // Get all notes for a specific user
-export async function getUserNotes(userId) {
+export async function getUserNotes(email, userId) {
   const userNotes = await notes
-    .find({ userId: new ObjectId(userId) })
+    .find({ email: email, userId: new ObjectId(userId) })
     .toArray(); // ← Convert cursor to an array
 
   return userNotes;
@@ -52,7 +53,7 @@ export async function updateNote(noteId, userId, update) {
     {
       $set: {
         ...update,
-        updatedAt: new Date()
+        updatedAt: new Date(),
       },
     }
   );

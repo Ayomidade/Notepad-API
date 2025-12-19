@@ -19,7 +19,7 @@ export const newUser = async (req, res) => {
 
     // generating jwt token
     const token = jwt.sign(
-      { newUser }, // payload
+      { email }, // payload
       process.env.JWT_SECRET, // jwt secret from the env file
       { expiresIn: "2h" } // token expiry time
     );
@@ -72,7 +72,7 @@ export const loginUser = async (req, res) => {
 
     // generating jwt token
     const token = jwt.sign(
-      { user }, // payload
+      { email}, // payload
       process.env.JWT_SECRET, // jwt secret from the env file
       { expiresIn: "2h" } // token expiry time
     );
