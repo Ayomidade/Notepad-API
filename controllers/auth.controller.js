@@ -8,7 +8,7 @@ export const newUser = async (req, res) => {
 
   try {
     // validating requset body
-    if (!firstname||!lastname || !email || !password) {
+    if (!firstname || !lastname || !email || !password) {
       return res
         .status(400)
         .send({ message: "Name, email and password are required." });
@@ -27,12 +27,10 @@ export const newUser = async (req, res) => {
     if (newUser) {
       res.status(201).send({
         message: `Registration successful`,
-        token
+        token,
       });
     } else {
-      res
-        .status(400)
-        .send({ message: "Action failed, please try again" });
+      res.status(400).send({ message: "Action failed, please try again" });
     }
   } catch (error) {
     if (error.status === 400) {
@@ -59,9 +57,7 @@ export const loginUser = async (req, res) => {
 
     // check if user exists
     if (!user) {
-      res
-        .status(404)
-        .send({ message: `User not found, please register` });
+      res.status(404).send({ message: `User not found.` });
     }
 
     // compare password
@@ -72,14 +68,14 @@ export const loginUser = async (req, res) => {
 
     // generating jwt token
     const token = jwt.sign(
-      { email}, // payload
+      { email }, // payload
       process.env.JWT_SECRET, // jwt secret from the env file
       { expiresIn: "2h" } // token expiry time
     );
 
     // giving successful response
     res.status(200).send({
-      message: `Login Successful, ${user.firstname}.`,
+      message: `Login Successful.`,
       token,
     });
   } catch (error) {
@@ -97,7 +93,7 @@ export const currentUser = async (req, res) => {
 
     if (user) {
       res.status(200).send({
-        message: `Welcome back ${user.firstname}, your email is ${user.email}`,
+        message: user,
       });
     } else {
       res.status(404).send({ message: "User not found" });

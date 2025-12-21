@@ -74,7 +74,7 @@ export const deleteNoteHandler = async (req, res) => {
     if (deletedNote.deletedCount === 0) {
       return res.status(404).send({
         message:
-          "Note not found or you don't have the right access to delete this note",
+          "Note not found.",
       });
     }
 

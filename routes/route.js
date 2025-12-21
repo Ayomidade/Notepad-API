@@ -19,7 +19,7 @@ export const router = Router();
 router.get("/root", defaultHandler);
 router.post("/new-user", newUser); //API to create new user(working)
 router.post("/login", rateLimiter, loginUser); //API to login user (working)
-router.post("/user", auth, currentUser);
+router.get("/user", auth, currentUser);
 router.post("/notes", auth, createNoteHandler); // API to create a new note (working)
 router.get("/notes", auth, getNotesHandler); // API to get all notes of a user (working)
 router.delete("/notes/:id", auth, deleteNoteHandler); //API to delete a single note with the notedId and userId
