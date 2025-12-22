@@ -122,7 +122,7 @@ export const updateNoteHandler = async (req, res) => {
   try {
     const user = await findUserByEmail(email);
     if (!user) {
-      return res.status(401).send({ message: "Unauthorized, please sign-up" });
+      return res.status(401).send({ message: "Unauthorized, please login" });
     }
 
     const note = await findNote(id, user._id);
@@ -138,9 +138,9 @@ export const updateNoteHandler = async (req, res) => {
       return res.status(400).send({ message: "Enter a field to update" });
     }
 
-    const updatedNote = await updateNote(id, req.user.id, update);
+    const updatedNote = await updateNote(id, user._id, update);
     if (updatedNote.matchedCount === 0) {
-      res.status(404).send({ message: "Access denied" });
+      return res.status(404).send({ message: "Note not updated" });
     }
 
     res.status(200).send({ message: "Note updated successfully" });

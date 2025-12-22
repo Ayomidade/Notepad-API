@@ -99,6 +99,6 @@ export const currentUser = async (req, res) => {
       res.status(404).send({ message: "User not found" });
     }
   } catch (error) {
-    res.status(500).send({ message: "Error fetching user data", error });
+    res.status(500).send({ message: "Error fetching user data."});
   }
 };
