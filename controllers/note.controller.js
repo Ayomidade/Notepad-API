@@ -42,7 +42,7 @@ export const getNotesHandler = async (req, res) => {
     const userId = user._id;
 
     if (user) {
-      const userNotes = await getUserNotes(user.email, userId);
+      const userNotes = await getUserNotes( userId);
       // if (userNotes == []) {
       //   return res.status(404).send({ message: "No note found" });
       // }

@@ -14,9 +14,9 @@ export async function createNote(title, content, userId) {
 }
 
 // Get all notes for a specific user
-export async function getUserNotes(email, userId) {
+export async function getUserNotes( userId) {
   const userNotes = await notes
-    .find({ email: email, userId: new ObjectId(userId) })
+    .find({  userId: new ObjectId(userId) })
     .toArray(); // ← Convert cursor to an array
 
   return userNotes;
