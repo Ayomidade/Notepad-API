@@ -12,6 +12,6 @@ app.use(
 app.use("/api", router); //localhost:5050/api
 
 app.listen(PORT, () => {
-  console.log(`Server running at port ${PORT}`);
+  // console.log(`Server running at port ${PORT}`);
   // console.log(`Error occurred, server can't start`, error);
 });

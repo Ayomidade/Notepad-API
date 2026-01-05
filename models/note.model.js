@@ -2,10 +2,9 @@ import { ObjectId } from "mongodb";
 import { notes } from "../utils/db.js";
 
 // Create a new note
-export async function createNote(title, content, userId, email) {
+export async function createNote(title, content, userId) {
   const { insertedId } = await notes.insertOne({
     userId: new ObjectId(userId),
-    email,
     title,
     content,
     createdAt: new Date(),

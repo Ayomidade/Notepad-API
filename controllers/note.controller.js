@@ -25,7 +25,7 @@ export const createNoteHandler = async (req, res) => {
         .status(400)
         .send({ message: "Title and content are required." });
     }
-    const noteId = await createNote(title, content, userId, email);
+    const noteId = await createNote(title, content, userId);
     res.status(201).send({ message: "Note successfully created", noteId });
   } catch (error) {
     console.log("Error creating note:", error);
@@ -73,8 +73,7 @@ export const deleteNoteHandler = async (req, res) => {
     const deletedNote = await deleteNote(user._id, id);
     if (deletedNote.deletedCount === 0) {
       return res.status(404).send({
-        message:
-          "Note not found.",
+        message: "Note not found.",
       });
     }
 
@@ -148,5 +147,31 @@ export const updateNoteHandler = async (req, res) => {
     res
       .status(500)
       .send({ message: "Internal Server Error", error: error.message });
+  }
+};
+
+// Handler to search for note
+export const searchNotes = async (req, res) => {
+  const { email } = req.user;
+  const { search } = req.query;
+
+  if (!search) {
+    return res.status(400).send({ message: "Search query is required" });
+  }
+  const user = findUserByEmail(email);
+  const userId = user._id;
+  try {
+    const userNotes = await getUserNotes(email, userId);
+    const matchedNotes = userNotes.filter(
+      (note) =>
+        note.title.toLowercase().includes(search.toLowercase) ||
+        note.content.toLowercase().includes(search.toLowercase)
+    );
+    if (matchedNotes.length === 0) {
+      return res.status(404).send({ message: "No matching notes found" });
+    }
+    return res.status(200).send({message:"Notes found", matchedNotes})
+  } catch (error) {
+    res.status(500).send({message:"Internal Server Error", error: error.message})
   }
 };
