@@ -63,8 +63,8 @@ Auth Routes
 
 Method	Endpoint	Description
 
-POST	/api/auth/register	Register a new user
-POST	/api/auth/login	Login user
+POST	/api/new-user  - 	Register a new user
+POST	/api/login	Login user
 
 
 
@@ -79,7 +79,7 @@ GET	/api/notes	Get all user notes
 GET	/api/notes/:id	Get a single note
 PATCH	/api/notes/:id	Update a note
 DELETE	/api/notes/:id	Delete a note
-
+GET /api/user Get current User
 
 
 ---
@@ -88,7 +88,7 @@ DELETE	/api/notes/:id	Delete a note
 
 Create a .env file in the root directory:
 
-PORT=5000
+PORT=5050
 MONGO_URI=your_mongodb_connection_string
 JWT_SECRET=your_secret_key
 
