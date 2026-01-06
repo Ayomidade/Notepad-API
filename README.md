@@ -1,132 +1,96 @@
----
-
-NoteFlow API
+## NoteFlow API
 
 A RESTful API for a notes application that provides user authentication and full CRUD functionality for managing personal notes.
 Each user can securely create, read, update, delete, and search their own notes.
 
+### 🚀 Features
 
----
+- User registration and login
 
-🚀 Features
+- JWT-based authentication
 
-User registration and login
+- Protected routes
 
-JWT-based authentication
+- Create, read, update, and delete notes
 
-Protected routes
+- User-specific data access
 
-Create, read, update, and delete notes
+- Secure password hashing
 
-User-specific data access
+### 🛠 Tech Stack
 
-Secure password hashing
+- Node.js
 
+- Express.js
 
+- MongoDB
 
----
+- JSON Web Tokens (JWT)
 
-🛠 Tech Stack
+- bcrypt
 
-Node.js
+📁
 
-Express.js
+### 🔐 Authentication
 
-MongoDB
+- Authentication is handled using JWT.
 
-JSON Web Tokens (JWT)
+- Token is issued on successful login
 
-bcrypt
+- Token must be sent in the Authorization header for protected routes
 
+- Authorization: Bearer <token>
 
-
----
-
-📁 
-🔐 Authentication
-
-Authentication is handled using JWT.
-
-Token is issued on successful login
-
-Token must be sent in the Authorization header for protected routes
-
-
-Authorization: Bearer <token>
-
-
----
-
-📌 API Endpoints
+### 📌 API Endpoints
 
 Auth Routes
 
-Method	Endpoint	Description
+Method Endpoint Description
 
-POST	/api/new-user  - 	Register a new user
-POST	/api/login	Login user
-
-
-
----
+- POST /api/new-user Register a new user
+- POST /api/login Login user
 
 Notes Routes (Protected)
 
-Method	Endpoint	Description
+Method Endpoint Description
 
-POST	/api/notes	Create a note
-GET	/api/notes	Get all user notes
-GET	/api/notes/:id	Get a single note
-PATCH	/api/notes/:id	Update a note
-DELETE	/api/notes/:id	Delete a note
-GET /api/user Get current User
+- POST /api/notes Create a note
+- GET /api/notes Get all user notes
+- GET /api/notes/:id Get a single note
+- PATCH /api/notes/:id Update a note
+- DELETE /api/notes/:id Delete a note
+- GET /api/user Get current User
 
-
----
-
-⚙️ Environment Variables
+### ⚙️ Environment Variables
 
 Create a .env file in the root directory:
 
-PORT=5050
-MONGO_URI=your_mongodb_connection_string
-JWT_SECRET=your_secret_key
+- PORT=5050
+- MONGO_URI=your_mongodb_connection_string
+- JWT_SECRET=your_secret_key
 
+### ▶️ Running the Server
 
----
+- Install dependencies:
+  npm install
 
-▶️ Running the Server
+- Start the development server:
+  npm run dev
 
-Install dependencies:
+### 🧠 Design Considerations
 
-npm install
+- Routes follow REST conventions
 
-Start the development server:
+- Middleware is used to protect private routes
 
-npm run dev
+- Controllers handle business logic
 
+- Models define database schema and validation
 
----
+- Each note is linked to its owner
 
-🧠 Design Considerations
-
-Routes follow REST conventions
-
-Middleware is used to protect private routes
-
-Controllers handle business logic
-
-Models define database schema and validation
-
-Each note is linked to its owner
-
-
-
----
-
-📄 License
+### 📄 License
 
 MIT License
-
 
 ---

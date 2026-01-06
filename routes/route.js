@@ -17,7 +17,6 @@ import {
 } from "../controllers/note.controller.js"; 
 
 export const router = Router();
-router.get("/root", defaultHandler);
 router.post("/new-user", newUser); //API to create new user(working)
 router.post("/login", rateLimiter, loginUser); //API to login user (working)
 router.get("/user", auth, currentUser);
